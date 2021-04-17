@@ -1,65 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:flutterista/screens/channel_page.dart';
+import 'package:flutterista/screens/initial_screen.dart';
+import 'package:flutterista/utils/stream_client.dart';
+import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
-void main() {
+main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+    return FutureBuilder(
+      future: StreamClientConnect.setup(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return MaterialApp(
+            builder: (context, widget) => StreamChat(
+              streamChatThemeData: StreamChatThemeData(
+                colorTheme: ColorTheme.light(),
+              ),
+              child: widget,
+              client: StreamClientConnect.client,
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+            debugShowCheckedModeBanner: false,
+            home: StreamChannel(
+              channel: StreamClientConnect.channel,
+              child: ChannelPage(),
             ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ),
+          );
+        }
+
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: InitialScreen(),
+        );
+      },
     );
   }
 }
