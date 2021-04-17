@@ -14,6 +14,7 @@ dependencies:
 
   cupertino_icons: ^1.0.2
   stream_chat_flutter: ^1.5.2
+  flutter_statusbar_manager: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -21,3 +22,18 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/
+
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: fonts/Poppins-Regular.ttf
+          weight: 300
+        - asset: fonts/Poppins-Medium.ttf
+          weight: 400
+        - asset: fonts/Poppins-SemiBold.ttf
+          weight: 500
+        - asset: fonts/Poppins-Bold.ttf
+          weight: 600
